@@ -18,6 +18,7 @@ const Tabela = () => {
     //stan do nazwy cwiczenia
     const [wagaTotal, setWagaTotal] = useState(0)
     //stan do wagi ktora powstaje po iloczynie ciezarpowtrzien i podniesiony
+    
     const getExcercise = () => {
         axios.get('http://localhost:3030/exercise').then((res) => {
             setRows(res.data);
@@ -29,7 +30,9 @@ const Tabela = () => {
     })
     //zapytanie dodawanie obiektu do bazy danych
     const setExercise = (nameExercise) => {
-        axios.post('http://localhost:3030/exercise', nameExercise)
+        axios.post('http://localhost:3030/exercise', nameExercise).then(()=>{
+            getExcercise()
+        })
     }
     //obsluguje zapisanie forma po kliknieciu
     const handelDodajSerie = (props) => {
