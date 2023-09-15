@@ -17,7 +17,7 @@ const Tabela = () => {
     const [nameExercise, setNameExercise] = useState('')
     //stan do nazwy cwiczenia
     const [wagaTotal, setWagaTotal] = useState(0)
-
+    //stan do wagi ktora powstaje po iloczynie ciezarpowtrzien i podniesiony
     const getExcercise = () => {
         axios.get('http://localhost:3030/exercise').then((res) => {
             setRows(res.data);
@@ -27,16 +27,11 @@ const Tabela = () => {
     useEffect(() => {
         getExcercise()
     })
-
-
-
-
-    const setExercise= (nameExercise)=> {
+    //zapytanie dodawanie obiektu do bazy danych
+    const setExercise = (nameExercise) => {
         axios.post('http://localhost:3030/exercise', nameExercise)
-        
     }
-
-
+    //obsluguje zapisanie forma po kliknieciu
     const handelDodajSerie = (props) => {
         const newRows = {
             name: nameExercise,
@@ -44,18 +39,15 @@ const Tabela = () => {
             repeatsNumber: iloscPowtorzen,
             weight: ciezarPodniesiony,
         };
-
         const nowaWaga = parseFloat(ciezarPodniesiony * iloscPowtorzen);
         setWagaTotal(wagaTotal + nowaWaga)
-
         setRows([...rows, newRows])
         //przeez stan setRzad ustawiamy nowa rzad w tabedli przez dodanie do starego ...nowyRzad z nowymRzad
         // po uzupelnieniu rzadeu ustaw na zero pola
-
+        setNameExercise('');
         setExercise(newRows);
         setIloscPowtorzen('');
         setCiezarPodniesiony('')
-        setNameExercise('');
         console.log(newRows);
 
     }
