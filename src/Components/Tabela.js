@@ -18,7 +18,7 @@ const Tabela = () => {
     //stan do nazwy cwiczenia
     const [wagaTotal, setWagaTotal] = useState(0)
     //stan do wagi ktora powstaje po iloczynie ciezarpowtrzien i podniesiony
-    
+
     const getExcercise = () => {
         axios.get('http://localhost:3030/exercise').then((res) => {
             setRows(res.data);
@@ -35,9 +35,9 @@ const Tabela = () => {
             repeatsNumber: iloscPowtorzen,
             weight: ciezarPodniesiony,
         };
-    
-        axios.post('http://localhost:3030/exercise', cwiczenia).then(()=>{
-            getExcercise()
+
+        axios.post('http://localhost:3030/exercise', cwiczenia).then(() => {
+
         })
     }
     //obsluguje zapisanie forma po kliknieciu
@@ -54,7 +54,11 @@ const Tabela = () => {
         //przeez stan setRzad ustawiamy nowa rzad w tabedli przez dodanie do starego ...nowyRzad z nowymRzad
         // po uzupelnieniu rzadeu ustaw na zero pola
         setNameExercise('');
-        setExercise(newRows);
+        setExercise({
+            name: nameExercise,
+            repeatsNumber: iloscPowtorzen,
+            weight: ciezarPodniesiony,
+        });
         setIloscPowtorzen('');
         setCiezarPodniesiony('')
         console.log(newRows);
