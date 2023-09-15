@@ -29,8 +29,14 @@ const Tabela = () => {
         getExcercise()
     })
     //zapytanie dodawanie obiektu do bazy danych
-    const setExercise = (nameExercise) => {
-        axios.post('http://localhost:3030/exercise', nameExercise).then(()=>{
+    const setExercise = () => {
+        const cwiczenia = {
+            name: nameExercise,
+            repeatsNumber: iloscPowtorzen,
+            weight: ciezarPodniesiony,
+        };
+    
+        axios.post('http://localhost:3030/exercise', cwiczenia).then(()=>{
             getExcercise()
         })
     }
