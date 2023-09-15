@@ -8,11 +8,21 @@ const Form = ({
     setCiezarPodniesiony,
     handelDodajSerie,
     wagaTotal,
+    nameExercise,
+    setNameExercise
 
 }) => {
     return (
         <div>
             <div className='dodaj-serie-form'>
+            <input
+                    type='text'
+                    id='nameExercise'
+                    name='nameExercise'
+                    placeholder='Nazawa Cwiczenia'
+                    value={nameExercise}
+                    onChange={(e) => setNameExercise(e.target.value)}
+                />
                 <input
                     type='number'
                     id='iloscPowtorzen'
@@ -30,6 +40,7 @@ const Form = ({
                     value={ciezarPodniesiony}
                     onChange={(e) => setCiezarPodniesiony(e.target.value)}
                 />
+
             </div>
             <button onClick={handelDodajSerie}>Dodaj Serie</button>
             <p> Ciżar przerzucony {wagaTotal} kg </p>
