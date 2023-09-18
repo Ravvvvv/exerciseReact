@@ -9,13 +9,15 @@ const Form = ({
     handelDodajSerie,
     wagaTotal,
     nameExercise,
-    setNameExercise
+    setNameExercise,
+
+
 
 }) => {
     return (
         <div>
             <div className='dodaj-serie-form'>
-            <input
+                <input
                     type='text'
                     id='nameExercise'
                     name='nameExercise'

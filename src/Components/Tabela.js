@@ -15,19 +15,44 @@ const Tabela = () => {
     const [rows, setRows] = useState([])
     //stan do przechowania rzedow w tabeli
     const [nameExercise, setNameExercise] = useState('')
-    //stan do nazwy cwiczenia
+    //stan do nazwy cwiczenia ktora 
     const [wagaTotal, setWagaTotal] = useState(0)
     //stan do wagi ktora powstaje po iloczynie ciezarpowtrzien i podniesiony
+    const [wagaTotalBack, setWagaTotalBack] = useState(0)
+
 
     const getExcercise = () => {
         axios.get('http://localhost:3030/exercise').then((res) => {
-            setRows(res.data);
+            const exerciseData = res.data
+            const exerciseDataApi = exerciseData.map((exercise)=>({...exercise,
+                nowaWaga: exercise.repeatsNumber * exercise.weight,
+                
+                
+                }))
+                setRows(exerciseDataApi);
         });
 
     };
     useEffect(() => {
         getExcercise()
-    })
+    }, [])
+
+
+
+
+    // const handelDeleteButton = (exerciseId) => {
+    //     axios.delete(`http://localhost:3030/exercise/delete/${exerciseId}`)
+    //         .then(() => {
+    //             setRows((prevRows) => prevRows.filter((row) => row.id !== exerciseId))
+    //         })
+
+
+    // };
+   
+
+
+
+
     //zapytanie dodawanie obiektu do bazy danych
     const setExercise = () => {
         const cwiczenia = {
@@ -35,7 +60,6 @@ const Tabela = () => {
             repeatsNumber: iloscPowtorzen,
             weight: ciezarPodniesiony,
         };
-
         axios.post('http://localhost:3030/exercise', cwiczenia).then(() => {
 
         })
@@ -49,8 +73,10 @@ const Tabela = () => {
             weight: ciezarPodniesiony,
         };
         const nowaWaga = parseFloat(ciezarPodniesiony * iloscPowtorzen);
-        setWagaTotal(wagaTotal + nowaWaga)
-        setRows([...rows, newRows])
+        const nowaWagaApi = parseFloat(ciezarPodniesiony * iloscPowtorzen);
+
+        setWagaTotal(wagaTotal + nowaWaga + nowaWagaApi)
+        setRows([...rows, newRows,])
         //przeez stan setRzad ustawiamy nowa rzad w tabedli przez dodanie do starego ...nowyRzad z nowymRzad
         // po uzupelnieniu rzadeu ustaw na zero pola
         setNameExercise('');
@@ -59,6 +85,9 @@ const Tabela = () => {
             repeatsNumber: iloscPowtorzen,
             weight: ciezarPodniesiony,
         });
+
+
+
         setIloscPowtorzen('');
         setCiezarPodniesiony('')
         console.log(newRows);
@@ -85,6 +114,9 @@ const Tabela = () => {
                             <td>{index + 1}</td>
                             <td>{row.repeatsNumber}</td>
                             <td>{row.weight}</td>
+                            <td>
+                                {/* <button onClick={() => handelDeleteButton(row.id)}>Usuń </button> */}
+                            </td>
                         </tr>
                     ))}
                 </tbody>
