@@ -21,34 +21,42 @@ const Tabela = () => {
     const [wagaTotalBack, setWagaTotalBack] = useState(0)
 
 
-    const getExcercise = () => {
+    const getExercise = () => {
         axios.get('http://localhost:3030/exercise').then((res) => {
-            const exerciseData = res.data
-            const exerciseDataApi = exerciseData.map((exercise)=>({...exercise,
-                nowaWaga: exercise.repeatsNumber * exercise.weight,
-                
-                
-                }))
-                setRows(exerciseDataApi);
+            const exerciseData = res.data;
+
+            let weightSuma = 0;
+
+            exerciseData.forEach((exercise) => {
+                const iloczyn = exercise.repeatsNumber * exercise.weight;
+                weightSuma += iloczyn;
+                exercise.iloczyn = iloczyn;
+            });
+
+            setWagaTotal(weightSuma);
+            setRows(exerciseData);
         });
+    };
+
+    useEffect(() => {
+        getExercise();
+    }, []);
+
+
+
+
+    const handelDeleteButton = (exerciseId) => {
+        axios.delete(`http://localhost:3030/exercise/delete/${exerciseId}`)
+            .then(() => {
+
+                setRows((prevRows) => prevRows.filter((row) => row._id !== exerciseId))
+
+              
+            })
+
 
     };
-    useEffect(() => {
-        getExcercise()
-    }, [])
 
-
-
-
-    // const handelDeleteButton = (exerciseId) => {
-    //     axios.delete(`http://localhost:3030/exercise/delete/${exerciseId}`)
-    //         .then(() => {
-    //             setRows((prevRows) => prevRows.filter((row) => row.id !== exerciseId))
-    //         })
-
-
-    // };
-   
 
 
 
@@ -65,7 +73,7 @@ const Tabela = () => {
         })
     }
     //obsluguje zapisanie forma po kliknieciu
-    const handelDodajSerie = (props) => {
+    const handelDodajSerie = () => {
         const newRows = {
             name: nameExercise,
             seria: seria,
@@ -75,7 +83,7 @@ const Tabela = () => {
         const nowaWaga = parseFloat(ciezarPodniesiony * iloscPowtorzen);
         const nowaWagaApi = parseFloat(ciezarPodniesiony * iloscPowtorzen);
 
-        setWagaTotal(wagaTotal + nowaWaga + nowaWagaApi)
+        setWagaTotal(wagaTotal + nowaWaga)
         setRows([...rows, newRows,])
         //przeez stan setRzad ustawiamy nowa rzad w tabedli przez dodanie do starego ...nowyRzad z nowymRzad
         // po uzupelnieniu rzadeu ustaw na zero pola
@@ -115,7 +123,7 @@ const Tabela = () => {
                             <td>{row.repeatsNumber}</td>
                             <td>{row.weight}</td>
                             <td>
-                                {/* <button onClick={() => handelDeleteButton(row.id)}>Usuń </button> */}
+                                <button onClick={() => handelDeleteButton(row._id)}>Usuń </button>
                             </td>
                         </tr>
                     ))}
